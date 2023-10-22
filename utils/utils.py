@@ -38,14 +38,19 @@ def get_pi_from_vi(vi, Lambda):
     """vi needs to be a numpy array"""
     return vi/Lambda
 
-def np1_iteration_position(R,R_1,s,ps,pi,Lambda,deltat,R0):
-    """ps a scalar, pi,R,R_1 numpy arrays """
+def np1_iteration_position(R,R_1,s,ps,pi,Lambda,deltat,R0,Rother):
+    """ps a scalar, pi,R,R_1 numpy arrays
+     Rother the position of the other atom """
+    norm = np.linalg.norm(R-Rother) # distance of atoms
 
-    x = 2*R[0]-R_1[0]+ (-(R[0]-R0)-s*ps*pi[0]*Lambda)*deltat**2
+    e_r = (R-Rother)/norm # the er vector 
+    
+    
+    x = 2*R[0]-R_1[0]+ (-(norm-R0)*e_r[0]-s*ps*pi[0]*Lambda)*deltat**2
 
-    theta = 2*R[1]-R_1[1]+deltat**2*(-s*ps*pi[1]*Lambda)
-    phi = 2*R[2]-R_1[2]+deltat**2*(-s*ps*pi[2]*Lambda)
-    return np.array([x,theta,phi])
+    y = 2*R[1]-R_1[1]+deltat**2*(-(norm-R0)*e_r[1]-s*ps*pi[1]*Lambda)
+    z = 2*R[2]-R_1[2]+deltat**2*(-(norm-R0)*e_r[2]-s*ps*pi[2]*Lambda)
+    return np.array([x,y,z])
 
 
 def np1_iteration_s(S,S_1,kinetic_energy,Lambda,deltat,ds,m,M):
