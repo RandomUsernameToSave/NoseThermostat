@@ -4,7 +4,7 @@ import utils.utils as u
 import math as m
 import utils.utils_display as u_display
 
-N = 1000
+N = 2000
 # M = m.inf
 D = 4.6141*1.6*10**(-19) #eV
 alpha = 1.81*10**(10) # m-1
@@ -18,16 +18,17 @@ R0 = alpha*r0
 
 Lambda = np.sqrt(3/2*kb*T0/D) #lambda parameter
 deltat = 0.01
-
+x0 = 3*np.random.rand(3)
+y0 = 3*np.random.rand(3)
 vH = [np.random.rand(3)]
 vCl = [np.random.rand(3)]
 s = [0.4,0.4]
 TimeScale = np.sqrt(mh/D/2)/alpha 
 
-M = m.inf
-
-rCl = [np.random.rand(3),np.random.rand(3)]
-rH = [np.random.rand(3),np.random.rand(3)]
+M = m.inf #mCl*1 #m.inf  #2*6*kb*T0*(TimeScale)**2
+print(M)
+rCl = [x0,x0+np.random.rand(3)]
+rH = [y0,y0+np.random.rand(3)]
 
 vH = u.first_time_differential_first_iteration_vector(rH[1],rH[0],deltat)
 vCl = u.first_time_differential_first_iteration_vector(rCl[1],rCl[0],deltat)
@@ -62,4 +63,4 @@ for i in range(N):
 #plt.plot(s)
 #plt.show()
 
-u_display.plot_3d_trajectory_animation_with_balls(np.transpose(np.array(rH)),np.transpose(np.array(rCl)))
+u_display.plot_3d_trajectory_animation_with_balls(np.transpose(np.array(rH)),np.transpose(np.array(rCl)),s)
